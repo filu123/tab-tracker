@@ -1,35 +1,75 @@
-/* eslint-disable-key-spacing */
+
 <template>
-<div >
-  <input type="email" value="email" v-model="email" placeholder="e-mail"/>
-  <input type="password" value="password" v-model="password" placeholder="password"/>
-  <button @click="register">Register</button>
-</div>
+  <v-layout column>
+    <v-flex xs6 offset-xs3>
+      <div class="white elevation-2">
+        <v-toolbar flat dense class="cyan">
+          <v-toolbar-title>Register</v-toolbar-title>
+        </v-toolbar>
+
+        <div class="pl-4 pr-4 pt-2 pb-2">
+          <v-text-field
+            name="input-2"
+            label="Email"
+            value="Input text"
+            v-model="email"
+            class="input-group--focused"
+          ></v-text-field>
+          <br>
+          <v-text-field
+            name="input-2"
+            label="Password"
+            value="Input text"
+            v-model="password"
+            class="input-group--focused"
+          ></v-text-field>
+
+          <div class="error" v-html="error"/>
+          <br>
+          <v-btn class="cyan" @click="register">Register</v-btn>
+        </div>
+      </div>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import AuthenticationService from '@/services/AuthenticationService'
+import AuthenticationService from "@/services/AuthenticationService";
 export default {
-  name: 'Register',
-  data () {
+  name: "Register",
+  data() {
     return {
-      email: '',
-      password: ''
-    }
+      email: "",
+      password: "",
+      error: null
+    };
   },
+  // watch: {
+  //   email: function(val) {
+  //     console.log( this.email= val);
+  //   },
+  //   password: function(val) {
+  //     console.log(this.password = val);
+  //   }
+  // },
   methods: {
-    async register () {
-      const response = await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      })
-      console.log(response.data)
+    async register() {
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        });
+      } catch (error) {
+        this.error = error.response.data.error;
+      }
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.error {
+  color: red;
+}
 </style>

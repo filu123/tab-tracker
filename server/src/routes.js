@@ -1,7 +1,6 @@
+const AC = require('./controllers/AuthenticationController');
+const ACP = require('./policies/AuthenticationControllerPolicy');
+
 module.exports = (app) => {
-  app.post('/register', (req, res) => {
-    res.send({
-      message: `Hello ${req.body.email}! you are a bitch`,
-    });
-  });
+  app.post('/register', ACP.register, AC.register);
 };
